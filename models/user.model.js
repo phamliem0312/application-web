@@ -1,37 +1,35 @@
 module.exports = mongoose => {
-    const schema = mongoose.model(
-        "user",
-        mongoose.Schema(
-            {
-                username: {
-                    type: String,
-                    required: true
-                },
-                password: {
-                    type: String
-                },
-                email: {
-                    type: String
-                },
-                phoneNumber: {
-                    type: String
-                },
-                roleId: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'role',
-                    required: true,
-                },
-                createdAt: { type: Date, default: new Date() },
-                updatedAt: { type: Date, default: new Date() }
+    const Schema = mongoose.Schema;
+    const userSchema = new Schema(
+        {
+            username: {
+                type: String,
+                required: true
             },
-            { timestamps: true }
-        )
+            password: {
+                type: String,
+                required: true
+            },
+            email: {
+                type: String
+            },
+            phoneNumber: {
+                type: String
+            },
+            roleId: {
+                type: Schema.Types.ObjectId,
+                ref: 'role'
+            },
+            createdAt: { type: Date, default: new Date() },
+            updatedAt: { type: Date, default: new Date() }
+        },
+        { timestamps: true }
     );
-    schema.method("toJSON", function () {
+    userSchema.method("toJSON", function () {
         const { __v, _id, ...object } = this.toObject();
         object.id = _id;
         return object;
     });
-    const User = mongoose.model("user", schema);
+    const User = mongoose.model("user", userSchema);
     return User;
 };
